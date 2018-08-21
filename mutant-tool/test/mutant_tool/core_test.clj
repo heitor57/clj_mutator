@@ -1,6 +1,6 @@
-(ns mutant-toll.core-test
+(ns mutant-tool.core-test
   (:require [clojure.test :refer :all]
-            [mutant-toll.core :refer :all]))
+            [mutant-tool.core :refer :all]))
 
 (deftest a-test
   (testing "FIXME, I fail."

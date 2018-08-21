@@ -1,4 +1,4 @@
-(ns mutant-toll.core
+(ns mutant-tool.core
   (:gen-class))
 
 (defn -main
