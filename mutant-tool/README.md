@@ -1,4 +1,4 @@
-# mutant-toll
+# mutant-tool
 
 FIXME: description
 
@@ -10,7 +10,7 @@ Download from http://example.com/FIXME.
 
 FIXME: explanation
 
-    $ java -jar mutant-toll-0.1.0-standalone.jar [args]
+    $ java -jar mutant-tool-0.1.0-standalone.jar [args]
 
 ## Options
 
