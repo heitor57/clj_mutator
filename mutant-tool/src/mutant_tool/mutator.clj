@@ -1,4 +1,5 @@
-(ns mutant-tool.mutator)
+(ns mutant-tool.mutator
+  (:require [rewrite-clj.zip :as zip]))
 (defn ^:private createop
   "Used to generate a hashmap of operators and their relationship
   (createop [\"or\" \"and\" \"+\" \"-\"])
