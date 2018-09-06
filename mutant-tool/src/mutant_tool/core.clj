@@ -1,4 +1,5 @@
 (ns mutant-tool.core
+  (:require [mutant-tool.mutator :as mut])
   (:gen-class))
 
 (defn -main
