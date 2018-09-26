@@ -41,3 +41,12 @@
   [text]
     (re-seq-pos (re-pattern (str s-exp-start-regex (regexgroup mut/opstr))) text)
   )
+
+(defn expandstr
+  "This function was made to be used before mapoperators to expand all the text and catch all operators that may be hidden
+  Example:
+  Entry: \"(when (> 2 1) (println \"Nice\"))\"
+  Result: \"(if (> 2 1) (do (println \"Nice\")))\""
+  [text]
+    (str (macroexpand (read-string text)))
+  )
