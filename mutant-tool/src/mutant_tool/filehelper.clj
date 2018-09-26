@@ -1,6 +1,6 @@
 (ns mutant-tool.filehelper
   (:require [mutant-tool.mutator :as mut]))
-(def ^:private s-exp-start-regex "\\(\\s*")
+(def ^:private s-exp-start-regex "(?<=\\(\\s*)")
 
 (defn ^:private re-seq-pos [pattern string] 
   (let [aux (re-matcher pattern string)] 
