@@ -1,6 +1,6 @@
 (ns mutant-tool.filehelper
   (:require [mutant-tool.mutator :as mut]))
-(def ^:private s-exp-start-regex "\\(\\s+")
+(def ^:private s-exp-start-regex "\\(\\s*")
 
 (defn ^:private re-seq-pos [pattern string] 
   (let [aux (re-matcher pattern string)] 
@@ -39,5 +39,6 @@
   "This maps all the file operators position to mutate after
   Normally use slurp to get the text..."
   [text]
+    (println (re-pattern (str s-exp-start-regex (regexgroup mut/opstr))))
     (re-seq-pos (re-pattern (str s-exp-start-regex (regexgroup mut/opstr))) text)
   )
