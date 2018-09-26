@@ -8,6 +8,17 @@
       (when (. aux find) 
         (cons {:start (. aux start) :end (. aux end) :group (. aux group)} 
               (lazy-seq (step))))))))
+(defn ^:private literalstr
+  "Transform a string to a 100% literal in regex form"
+  [string]
+  (loop [head string
+         result ""]
+    (if (empty? head)
+      (identity result)
+      (recur (rest head) (str result "[" (first head) "]"))
+      )
+    )
+  )
 (defn ^:private regexgroup
   "Create regex for the operators"
   [v]
@@ -16,7 +27,7 @@
                                                  result ""]
                                             (if (empty? head)
                                               (identity result)
-                                              (recur (rest head) (str result "(" (first head) ")|"))
+                                              (recur (rest head) (str result "(" (literalstr (first head)) ")|"))
                                               )
                                             )
                                           )
