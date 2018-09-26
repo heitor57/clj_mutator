@@ -1,5 +1,7 @@
 (ns mutant-tool.mutator
   (:require [rewrite-clj.zip :as zip]))
+(def opstr ["+" "-" "or" "and" "empty?" "seq"])
+
 (defn ^:private createop
   "Used to generate a hashmap of operators and their relationship
   (createop [\"or\" \"and\" \"+\" \"-\"])
@@ -15,7 +17,7 @@
           (into finalval {(keyword part) (symbol sec) (keyword sec) (symbol part)}))))))
 
 
-(def ^:private operators (createop ["+" "-" "or" "and" "empty?" "seq"]))
+(def ^:private operators (createop opstr))
 
 (defn ^:private changeop
   [op]
