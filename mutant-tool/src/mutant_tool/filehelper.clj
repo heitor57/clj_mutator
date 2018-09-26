@@ -1,5 +1,6 @@
 (ns mutant-tool.filehelper
-  (:require [mutant-tool.mutator :as mut]))
+  (:require [mutant-tool.mutator :as mut])
+  (:require [clojure.walk :as walk]))
 (def ^:private s-exp-start-regex "(?<=\\(\\s*)")
 
 (defn ^:private re-seq-pos [pattern string] 
@@ -46,7 +47,7 @@
   "This function was made to be used before mapoperators to expand all the text and catch all operators that may be hidden
   Example:
   Entry: \"(when (> 2 1) (println \"Nice\"))\"
-  Result: \"(if (> 2 1) (do (println \"Nice\")))\""
+  Result: \"[(if (> 2 1) (do (println \"Nice\")))]\""
   [text]
-    (str (macroexpand (read-string text)))
+    (str (walk/macroexpand-all (read-string (str "[" text "]"))))
   )
