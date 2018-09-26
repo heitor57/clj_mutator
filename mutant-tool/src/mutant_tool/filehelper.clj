@@ -35,8 +35,8 @@
        ")"
        )
   )
-(defn mapfileoperators
-  "This maps all the file operators position to mutate after
+(defn mapoperators
+  "This maps all the operators position to mutate after
   Normally use slurp to get the text..."
   [text]
     (re-seq-pos (re-pattern (str s-exp-start-regex (regexgroup mut/opstr))) text)

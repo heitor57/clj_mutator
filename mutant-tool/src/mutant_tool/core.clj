@@ -6,4 +6,4 @@
 (defn -main
   "I don't do a whole lot ... yet."
   [& args]
-  (println (fh/mapfileoperators "(+ 2 3 (+ 5 2))")))
+  (println (fh/mapoperators "(+ 2 3 (+ 5 2))")))
