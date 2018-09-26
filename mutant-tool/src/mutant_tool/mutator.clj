@@ -1,5 +1,4 @@
-(ns mutant-tool.mutator
-  (:require [rewrite-clj.zip :as zip]))
+(ns mutant-tool.mutator)
 (def opstr ["+" "-" "or" "and" "empty?" "seq"])
 
 (defn ^:private createop

@@ -39,6 +39,5 @@
   "This maps all the file operators position to mutate after
   Normally use slurp to get the text..."
   [text]
-    (println (re-pattern (str s-exp-start-regex (regexgroup mut/opstr))))
     (re-seq-pos (re-pattern (str s-exp-start-regex (regexgroup mut/opstr))) text)
   )
