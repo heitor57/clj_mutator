@@ -1,4 +1,4 @@
-(ns mutant-tool.mutator
+(ns mutant-tool.filehelper
   (:require [mutant-tool.mutator :as mut]))
 (def ^:private s-exp-start-regex "\(\s+")
 
