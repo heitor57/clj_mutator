@@ -1,4 +1,7 @@
-(ns mutant-tool.mutator)
+(ns mutant-tool.mutator
+  (:require [mutant-tool.operators :refer [opstr]])
+  (:require [mutant-tool.filehelper :as fh]))
+
 (defn ^:private createop
   "Used to generate a hashmap of operators and their relationship
   (createop [\"or\" \"and\" \"+\" \"-\"])
@@ -14,7 +17,7 @@
           (into finalval {(keyword part) (symbol sec) (keyword sec) (symbol part)}))))))
 
 
-(def ^:private operators (createop ["+" "-" "or" "and" "empty?" "seq"]))
+(def ^:private operators (createop opstr))
 
 (defn ^:private changeop
   [op]
