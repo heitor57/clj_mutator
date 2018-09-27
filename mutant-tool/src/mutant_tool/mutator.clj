@@ -1,5 +1,5 @@
-(ns mutant-tool.mutator)
-(def opstr ["+" "-" "or" "and" "empty?" "seq"])
+(ns mutant-tool.mutator
+  (:require [mutant-tool.operators :refer [opstr]]))
 
 (defn ^:private createop
   "Used to generate a hashmap of operators and their relationship

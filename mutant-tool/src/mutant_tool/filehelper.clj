@@ -1,4 +1,5 @@
 (ns mutant-tool.filehelper
+  (:require [mutant-tool.operators :refer [opstr]])
   (:require [mutant-tool.mutator :as mut])
   (:require [clojure.walk :as walk]))
 (def ^:private s-exp-start-regex "(?<=\\(\\s*)")
@@ -40,7 +41,7 @@
   "This maps all the operators position to mutate after
   Normally use slurp to get the text..."
   [text]
-    (re-seq-pos (re-pattern (str s-exp-start-regex (regexgroup mut/opstr))) text)
+    (re-seq-pos (re-pattern (str s-exp-start-regex (regexgroup opstr))) text)
   )
 
 (defn expandstr
