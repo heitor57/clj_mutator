@@ -10,6 +10,6 @@
   [& args]
   (println (fh/mapoperators "(+ 2 3 (+ 5 2))"))
   (println (fh/expandstr "(when (> 2 1) (println \"Nice\"))"))
-  (println (fh/mapoperators (fh/expandstr code-test)))
+  (println (fh/mapoperators code-test))
   (println (eval (read-string (fh/expandstr code-test))))
   )
