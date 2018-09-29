@@ -30,3 +30,18 @@
         remaining (rest exp)]
     (conj (into newexp remaining) (changeop (first exp))))
   )
+
+(defn mutations
+  [text]
+  (loop [head (fh/mapoperators text)
+         mutations []]
+    (if (empty? head)
+      mutations
+      (recur (rest head) 
+             (conj mutations (let [elem (first head)]
+                               (str (subs text 0 (:start elem)) (changeop (:group elem)) (subs text (:end elem)))
+                               ))
+             )
+      )
+    )
+  )

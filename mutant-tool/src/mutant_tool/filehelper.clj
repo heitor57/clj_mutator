@@ -50,5 +50,5 @@
   "This maps all the operators position to mutate after
   Normally use slurp to get the text..."
   [text]
-  (re-seq-pos (re-pattern (str s-exp-start-regex (regexgroup opstr))) (expandstr text))
+  (re-seq-pos (re-pattern (str s-exp-start-regex (regexgroup opstr))) text)
   )
