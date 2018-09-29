@@ -12,4 +12,5 @@
   (println (fh/expandstr "(when (> 2 1) (println \"Nice\"))"))
   (println (fh/mapoperators code-test))
   (println (eval (read-string (fh/expandstr code-test))))
+  (println (->  code-test mut/mutations))
   )
