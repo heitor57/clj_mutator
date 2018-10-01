@@ -1,6 +1,8 @@
 (ns mutant-tool.filehelper
-  (:require [mutant-tool.operators :refer [opstr]])
-  (:require [clojure.walk :as walk]))
+  (:require [mutant-tool.operators :refer [opstr]]
+            [clojure.walk :as walk]
+            )
+  )
 (def ^:private s-exp-start-regex "(?<=\\(\\s*)")
 
 (defn ^:private re-seq-pos [pattern string] 

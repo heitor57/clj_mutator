@@ -1,10 +1,11 @@
 (ns mutant-tool.core
-  (:require [mutant-tool.mutator :as mut])
-  (:require [mutant-tool.filehelper :as fh])
+  (:require [mutant-tool.mutator :as mut]
+            [mutant-tool.filehelper :as fh])
+
   (:gen-class))
 (def code-test "(+ 1 2)
-(+ 3 2)
-(or nil 1)")
+               (+ 3 2)
+               (or nil 1)")
 (defn -main
   "I don't do a whole lot ... yet."
   [& args]

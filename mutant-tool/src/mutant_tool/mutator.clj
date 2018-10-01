@@ -1,6 +1,7 @@
 (ns mutant-tool.mutator
-  (:require [mutant-tool.operators :refer [opstr]])
-  (:require [mutant-tool.filehelper :as fh]))
+  (:require [mutant-tool.operators :refer [opstr]]
+            [mutant-tool.filehelper :as fh])
+  )
 
 (defn ^:private createop
   "Used to generate a hashmap of operators and their relationship
