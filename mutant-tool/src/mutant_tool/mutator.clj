@@ -1,24 +1,8 @@
 (ns mutant-tool.mutator
-  (:require [mutant-tool.operators :refer [opstr]]
-            [mutant-tool.filehelper :as fh])
+  (:require [mutant-tool.operators :refer [opstr operators]]
+            [mutant-tool.filehelper :as fh]
+            [rewrite-clj.zip :as z])
   )
-
-(defn ^:private createop
-  "Used to generate a hashmap of operators and their relationship
-  (createop [\"or\" \"and\" \"+\" \"-\"])
-  that generate: {:or 'and, :and 'or, :+ '-, :- '+}"
-  [value]
-  (loop [queue value
-         finalval {}]
-    (if (empty? queue)
-      finalval
-      (let [[part sec & remaining] queue]
-        (recur 
-          remaining 
-          (into finalval {(keyword part) (symbol sec) (keyword sec) (symbol part)}))))))
-
-
-(def ^:private operators (createop opstr))
 
 (defn ^:private changeop
   [op]
@@ -32,17 +16,37 @@
     (conj (into newexp remaining) (changeop (first exp))))
   )
 
-(defn mutations
-  [text]
-  (loop [head (fh/mapoperators text)
+(defn mutate
+  [zip]
+  (loop [head (fh/mapoperators zip)
          mutations []]
     (if (empty? head)
       mutations
       (recur (rest head) 
-             (conj mutations (let [elem (first head)]
-                               (str (subs text 0 (:start elem)) (changeop (:group elem)) (subs text (:end elem)))
-                               ))
+             (conj mutations (z/replace (first head) (-> head first z/sexpr changeop)) )
              )
+      )
+    )
+  )
+(defn mutate-file
+  [filename]
+  (-> filename fh/file->zipper mutate)
+  )
+(defn mutations-string
+  [mut]
+  (for [x mut]
+    (z/root-string x))
+  )
+(defn mutations-print
+  [mut]
+  (loop [x (mutations-string mut)
+         i 1]
+    (if (empty? x)
+      nil
+      (do
+        (println "--==Mutation " i "\n" (first x)) 
+        (recur (rest x) (inc i))
+        )
       )
     )
   )

@@ -1,6 +1,8 @@
 (ns mutant-tool.core
   (:require [mutant-tool.mutator :as mut]
-            [mutant-tool.filehelper :as fh])
+            [mutant-tool.filehelper :as fh]
+            [rewrite-clj.zip :as z]
+            )
 
   (:gen-class))
 (def code-test "(+ 1 2)
@@ -9,9 +11,7 @@
 (defn -main
   "I don't do a whole lot ... yet."
   [& args]
-  (println (fh/mapoperators "(+ 2 3 (+ 5 2))"))
-  (println (fh/expandstr "(when (> 2 1) (println \"Nice\"))"))
-  (println (fh/mapoperators code-test))
-  (println (eval (read-string (fh/expandstr code-test))))
-  (println (->  code-test mut/mutations))
+  (-> "src/mutant_tool/core.clj" fh/file->zipper fh/mapoperators (get 0) z/root-string println)
+  (-> "src/mutant_tool/filehelper.clj" mut/mutate-file mut/mutations-print)
+  (-> code-test z/of-string z/next z/root-string println)
   )

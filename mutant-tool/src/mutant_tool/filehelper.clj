@@ -1,45 +1,10 @@
 (ns mutant-tool.filehelper
-  (:require [mutant-tool.operators :refer [opstr]]
+  (:require [mutant-tool.operators :refer [opstr operators]]
             [clojure.walk :as walk]
+            [rewrite-clj.zip :as z]
             )
   )
-(def ^:private s-exp-start-regex "(?<=\\(\\s*)")
-
-(defn ^:private re-seq-pos [pattern string] 
-  (let [aux (re-matcher pattern string)] 
-    ((fn step [] 
-       (when (. aux find) 
-         (cons {:start (. aux start) :end (. aux end) :group (. aux group)} 
-               (lazy-seq (step))))))))
-(defn ^:private literalstr
-  "Transform a string to a 100% literal in regex form"
-  [string]
-  (loop [head string
-         result ""]
-    (if (empty? head)
-      (identity result)
-      (recur (rest head) (str result "[" (first head) "]"))
-      )
-    )
-  )
-(defn ^:private regexgroup
-  "Create regex for the operators"
-  [v]
-  (str "(" 
-       (clojure.string/join "" (drop-last (loop [head v
-                                                 result ""]
-                                            (if (empty? head)
-                                              (identity result)
-                                              (recur (rest head) (str result "(" (literalstr (first head)) ")|"))
-                                              )
-                                            )
-                                          )
-                            ) 
-       ")(?=\\s+)" 
-       )
-  )
-
-(defn- read-string-all
+(defn read-string-all
   [text]
   (read-string (str "[" text "]"))
   )
@@ -51,10 +16,26 @@
   [text]
   (str (walk/macroexpand-all (read-string-all text)))
   )
-
+(defn file->zipper
+  [filename]
+  (-> filename slurp read-string-all str z/of-string)
+  )
 (defn mapoperators
   "This maps all the operators position to mutate after
   Normally use slurp to get the text..."
-  [text]
-  (re-seq-pos (re-pattern (str s-exp-start-regex (regexgroup opstr))) text)
+  [zip]
+  (loop [zip zip
+         opmap []]
+    (if (z/end? zip)
+      opmap
+      (if (z/seq? zip)
+        (recur (z/next zip) opmap)
+        (if (and (z/leftmost? zip) (-> zip z/sexpr keyword operators nil? not)) 
+          (recur (z/next zip) (conj opmap zip))    
+          (recur (z/next zip) opmap)
+          )
+        )
+      )
+    )
   )
+
