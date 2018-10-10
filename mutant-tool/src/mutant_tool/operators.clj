@@ -1,19 +1,25 @@
 (ns mutant-tool.operators)
-(def opstr ["+" "-" "or" "and" "empty?" "seq"])
+(def opstr [["+" "-" "*" "/"] ["or" "and"] ["empty?" "seq"]])
 (defn ^:private createop
   "Used to generate a hashmap of operators and their relationship
-  (createop [\"or\" \"and\" \"+\" \"-\"])
-  that generate: {:or 'and, :and 'or, :+ '-, :- '+}"
+  (createop [[\"+\" \"-\" \"*\" \"/\"] [\"or\" \"and\"] [\"empty?\" \"seq\"]])
+  that generate: {:+ (\"-\" \"*\" \"/\"), :- (\"+\" \"*\" \"/\"), :* (\"+\" \"-\" \"/\"), :/ (\"+\" \"-\" \"*\"), :or (\"and\"), :and (\"or\"), :empty? (\"seq\"), :seq (\"empty?\")}"
   [value]
   (loop [queue value
-         finalval {}]
+         finalval {}] 
     (if (empty? queue)
       finalval
-      (let [[part sec & remaining] queue]
-        (recur 
-          remaining 
-          (into finalval {(keyword part) (symbol sec) (keyword sec) (symbol part)}))))))
-
+      (recur 
+        (rest queue) 
+        (into 
+          finalval 
+          (into [] 
+                (for [op (first queue)] 
+                  (conj [] (keyword op) (filter #(not= op %) (first queue))))))
+        )
+      )
+    )
+  )
 
 (def operators (createop opstr))
 
