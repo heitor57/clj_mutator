@@ -16,7 +16,7 @@
     (conj (into newexp remaining) (changeop (first exp))))
   )
 
-(defn mutations
+(defn mutate
   [zip]
   (loop [head (fh/mapoperators zip)
          mutations []]
@@ -30,10 +30,23 @@
   )
 (defn mutate-file
   [filename]
-  (-> filename fh/file->zipper mutations)
+  (-> filename fh/file->zipper mutate)
   )
 (defn mutations-string
   [mut]
   (for [x mut]
-    (-> x z/root-string))
+    (z/root-string x))
+  )
+(defn mutations-print
+  [mut]
+  (loop [x (mutations-string mut)
+         i 1]
+    (if (empty? x)
+      nil
+      (do
+        (println "--==Mutation " i "\n" (first x)) 
+        (recur (rest x) (inc i))
+        )
+      )
+    )
   )

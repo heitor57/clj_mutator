@@ -17,8 +17,8 @@
   (str (walk/macroexpand-all (read-string-all text)))
   )
 (defn file->zipper
-  [file]
-  (-> file slurp read-string-all str z/of-string)
+  [filename]
+  (-> filename slurp read-string-all str z/of-string)
   )
 (defn mapoperators
   "This maps all the operators position to mutate after
@@ -38,3 +38,4 @@
       )
     )
   )
+

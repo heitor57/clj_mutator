@@ -11,6 +11,7 @@
 (defn -main
   "I don't do a whole lot ... yet."
   [& args]
-  (-> "src/mutant_tool/filehelper.clj" fh/file->zipper fh/mapoperators (get 0) z/root-string println)
-  (-> "src/mutant_tool/filehelper.clj" mut/mutate-file mut/mutations-string println)
+  (-> "src/mutant_tool/core.clj" fh/file->zipper fh/mapoperators (get 0) z/root-string println)
+  (-> "src/mutant_tool/filehelper.clj" mut/mutate-file mut/mutations-print)
+  (-> code-test z/of-string z/next z/root-string println)
   )
