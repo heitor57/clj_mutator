@@ -23,7 +23,11 @@
     (if (empty? head)
       mutations
       (recur (rest head) 
-             (conj mutations (z/replace (first head) (-> head first z/sexpr changeop)) )
+             (into mutations 
+                   (for [tmpop (-> head first z/sexpr changeop)]
+                     (z/replace (first head) tmpop)
+                     )
+                   )
              )
       )
     )

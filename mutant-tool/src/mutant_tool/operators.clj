@@ -22,5 +22,3 @@
   )
 
 (def operators (createop opstr))
-
-
