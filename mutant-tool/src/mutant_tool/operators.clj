@@ -3,7 +3,7 @@
 (defn ^:private createop
   "Used to generate a hashmap of operators and their relationship
   (createop [[\"+\" \"-\" \"*\" \"/\"] [\"or\" \"and\"] [\"empty?\" \"seq\"]])
-  that generate: {:+ (\"-\" \"*\" \"/\"), :- (\"+\" \"*\" \"/\"), :* (\"+\" \"-\" \"/\"), :/ (\"+\" \"-\" \"*\"), :or (\"and\"), :and (\"or\"), :empty? (\"seq\"), :seq (\"empty?\")}"
+  that generate: {:+ (- * /), :- (+ * /), :* (+ - /), :/ (+ - *), :or (and), :and (or), :empty? (seq), :seq (empty?)}"
   [value]
   (loop [queue value
          finalval {}] 
@@ -15,7 +15,7 @@
           finalval 
           (into [] 
                 (for [op (first queue)] 
-                  (conj [] (keyword op) (filter #(not= op %) (first queue))))))
+                  (conj [] (keyword op) (map symbol (filter #(not= op %) (first queue)))))))
         )
       )
     )
