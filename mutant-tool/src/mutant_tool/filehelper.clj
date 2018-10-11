@@ -18,7 +18,7 @@
   )
 (defn file->zipper
   [filename]
-  (-> filename slurp read-string-all str z/of-string)
+  (-> filename slurp z/of-string)
   )
 (defn mapoperators
   "This maps all the operators position to mutate after
