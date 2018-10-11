@@ -1,8 +1,9 @@
 (ns mutant-tool.mutator
   (:require [mutant-tool.operators :refer [opstr operators]]
             [mutant-tool.filehelper :as fh]
-            [rewrite-clj.zip :as z])
-  )
+            [rewrite-clj.zip :as z]
+            [clj-diffmatchpatch :as dmp]
+            [jansi-clj [core :as js] auto]))
 
 (defn ^:private changeop
   [op]
@@ -48,8 +49,31 @@
     (if (empty? x)
       nil
       (do
-        (println "--==Mutation " i "\n" (first x)) 
+        (println "--==Mutation " i "\n" (first x) "\n") 
         (recur (rest x) (inc i))
+        )
+      )
+    )
+  )
+(defn mutations-string-diff
+  [file mut]
+  (for [v (for [x (mutations-string mut)]
+            (dmp/wdiff file x))]
+    (apply str (for [diffvector v]
+                 (case (first diffvector)
+                   :equal (second diffvector)
+                   :insert (str (js/green "[+ ") (js/green (second diffvector)) (js/green " +]"))
+                   :delete (str (js/red "[- ") (js/red (second diffvector)) (js/red " -]"))))))
+  )
+(defn mutations-print-diff
+  [file mut]
+  (loop [strs (mutations-string-diff file mut)
+         i 1] 
+    (if (empty? strs)
+      nil
+      (do
+        (println "--==Mutation " i "\n" (first strs) "\n") 
+        (recur (rest strs) (inc i))
         )
       )
     )
