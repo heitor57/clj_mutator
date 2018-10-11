@@ -49,7 +49,8 @@
     (if (empty? x)
       nil
       (do
-        (println "--==Mutation " i "\n" (first x) "\n") 
+        (println "--==Mutation " i)
+        (println (first x) "\n") 
         (recur (rest x) (inc i))
         )
       )
@@ -72,7 +73,9 @@
     (if (empty? strs)
       nil
       (do
-        (println "--==Mutation " i "\n" (first strs) "\n") 
+        
+        (println "--==Mutation " i)
+        (println (first strs) "\n") 
         (recur (rest strs) (inc i))
         )
       )
