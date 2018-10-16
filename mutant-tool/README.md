@@ -29,8 +29,9 @@ FIXME: listing of options this app accepts.
 ### Might be Useful
 
 ## License
+MIT License
 
-Copyright © 2018 FIXME
+Copyright (c) 2018 Heitor Lourenço Werneck
 
-Distributed under the Eclipse Public License either version 1.0 or (at
-your option) any later version.
+This work is licensed under the terms of the MIT license.  
+For a copy, see <https://opensource.org/licenses/MIT>.
