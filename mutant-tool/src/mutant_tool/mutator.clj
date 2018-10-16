@@ -63,8 +63,8 @@
     (apply str (for [diffvector v]
                  (case (first diffvector)
                    :equal (second diffvector)
-                   :insert (str (js/green "[+ ") (js/green (second diffvector)) (js/green " +]"))
-                   :delete (str (js/red "[- ") (js/red (second diffvector)) (js/red " -]"))))))
+                   :insert (str (js/green "|+ ") (js/green (second diffvector)) (js/green " +|"))
+                   :delete (str (js/red "|- ") (js/red (second diffvector)) (js/red " -|"))))))
   )
 (defn mutations-print-diff
   [file mut]
