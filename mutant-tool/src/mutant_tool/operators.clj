@@ -1,5 +1,5 @@
 (ns mutant-tool.operators)
-(def opstr [["+" "-" "*" "/"] ["or" "and"] ["empty?" "seq"]])
+(def opstr [["+" "-" "*" "/" "mod"] ["or" "and"] ["empty?" "seq"]])
 (defn ^:private createop
   "Used to generate a hashmap of operators and their relationship
   (createop [[\"+\" \"-\" \"*\" \"/\"] [\"or\" \"and\"] [\"empty?\" \"seq\"]])
