@@ -2,6 +2,9 @@
   (:require [mutant-tool.operators :refer [opstr operators]]
             [clojure.walk :as walk]
             [rewrite-clj.zip :as z]
+            [clojure.tools.namespace
+             [find :as find]]
+            [clojure.java.io :as io]
             )
   )
 (defn read-string-all
@@ -38,4 +41,28 @@
       )
     )
   )
+
+
+(defn clj-files
+  [dir]
+  (find/find-clojure-sources-in-dir (io/file dir))
+  #_(-> dir clojure.java.io/file find/find-sources-in-dir)
+  )
+
+
+(defn safe-delete
+  [file-path]
+  (if (.exists (clojure.java.io/file file-path))
+    (try
+      (clojure.java.io/delete-file file-path)
+      (catch Exception e (str "exception: " (.getMessage e))))
+    false))
+
+(defn delete-directory
+  [directory-path]
+  (let [directory-contents (file-seq (clojure.java.io/file directory-path))
+        files-to-delete (filter #(.isFile %) directory-contents)]
+    (doseq [file files-to-delete]
+      (safe-delete (.getPath file)))
+    (safe-delete directory-path)))
 

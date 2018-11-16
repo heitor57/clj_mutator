@@ -12,5 +12,6 @@
 (defn -main
   "I don't do a whole lot ... yet."
   [& args]
-  (->>  (mut/mutate (z/of-string code-test)) (mut/mutations-print-diff code-test))
+  (mut/mutate-proj ".")
+  #_(->>  (mut/mutate (z/of-string code-test)) (mut/mutations-print-diff code-test))
   )

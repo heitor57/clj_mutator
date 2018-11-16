@@ -7,6 +7,7 @@
                  [rewrite-clj "0.6.1"]
                  [clj-diffmatchpatch "0.0.9.3"]
                  [jansi-clj "0.1.1"]
+                 [org.clojure/tools.namespace "0.2.11"]
                  ]
   :main ^:skip-aot mutant-tool.core
   :target-path "target/%s"

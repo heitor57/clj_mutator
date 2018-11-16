@@ -4,6 +4,7 @@
             [rewrite-clj.zip :as z]
             [clj-diffmatchpatch :as dmp]
             [jansi-clj [core :as js] auto]))
+(def clj-extension "clj")
 
 (defn ^:private changeop
   [op]
@@ -26,13 +27,8 @@
       (recur (rest head) 
              (into mutations 
                    (for [tmpop (-> head first z/sexpr changeop)]
-                     (z/replace (first head) tmpop)
-                     )
-                   )
-             )
-      )
-    )
-  )
+                     (z/replace (first head) tmpop)))))))
+
 (defn mutate-file
   [filename]
   (-> filename fh/file->zipper mutate)
@@ -81,3 +77,21 @@
       )
     )
   )
+
+(defn clear-proj
+  [dir]
+  (doseq [strfile (->> dir fh/clj-files (map str))]
+    (let [newdir (subs strfile 0 (clojure.string/last-index-of strfile "."))]
+      (fh/delete-directory newdir)
+      )
+    )
+  )
+
+(defn mutate-proj
+  [dir]
+  (clear-proj dir)
+  (doseq [strfile (->> dir fh/clj-files (map str))]
+    (let [dirname (subs strfile (clojure.string/last-index-of strfile "/") (clojure.string/last-index-of strfile "."))
+          newdir (subs strfile 0 (clojure.string/last-index-of strfile "."))]
+      (-> newdir java.io.File. .mkdir)
+      (dorun (map #(spit (str newdir "/" dirname %2 "." clj-extension) %1) (-> strfile mutate-file mutations-string) (iterate inc 1))))))
