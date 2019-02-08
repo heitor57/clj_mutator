@@ -88,10 +88,21 @@
   )
 
 (defn mutate-proj
-  [dir]
+  ([dir]
   (clear-proj dir)
   (doseq [strfile (->> dir fh/clj-files (map str))]
     (let [dirname (subs strfile (clojure.string/last-index-of strfile "/") (clojure.string/last-index-of strfile "."))
           newdir (subs strfile 0 (clojure.string/last-index-of strfile "."))]
       (-> newdir java.io.File. .mkdir)
       (dorun (map #(spit (str newdir "/" dirname %2 "." clj-extension) %1) (-> strfile mutate-file mutations-string) (iterate inc 1))))))
+  ([dir target]
+   (clear-proj target)
+  (doseq [strfile (->> dir fh/clj-files (map str))]
+    (let [dirname (subs strfile (clojure.string/last-index-of strfile "/") (clojure.string/last-index-of strfile "."))
+          newdir (clojure.string/replace (subs strfile 0 (clojure.string/last-index-of strfile "."))
+                          (re-pattern dir)
+                          target)]
+      (println newdir "   " dirname)
+      (-> newdir java.io.File. .mkdirs)
+      (dorun (map #(spit (str newdir "/" dirname %2 "." clj-extension) %1) (-> strfile mutate-file mutations-string) (iterate inc 1))))))
+   )
